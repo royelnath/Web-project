@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the number</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Guess the number 1 to 100</h1>
+        <div class="box">
+            <input placeholder="Enter a number" id="userInput" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            <div class="button-container">
+                <button id="check">Check</button>
+                <button id="reset" onclick="location.reload()">reset</button>
+                <div class="result">
+                    <p id="message"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #3d0000 0%, #000000 100%);
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    z-index: 10;
+}
+
+#title {
+    font-size: 2rem;
+    color: #ff4d6d;
+    text-shadow: 0 0 10px #ff4d6d;
+    margin-bottom: 30px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+#countdown {
+    display: flex;
+    gap: 20px;
+}
+
+.time-box {
+    background: rgba(255, 77, 109, 0.1);
+    border: 1px solid #ff4d6d;
+    padding: 20px;
+    border-radius: 15px;
+    min-width: 100px;
+    box-shadow: 0 0 15px rgba(255, 77, 109, 0.3);
+}
+
+.time-box span {
+    display: block;
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 20px #ff4d6d;
+}
+
+.time-box p {
+    margin: 5px 0 0;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #ffb3c1;
+}
+
+/* Background Animation: Simple floating pulse */
+.heart-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/heart.png');
+    opacity: 0.1;
+    animation: pulse 5s infinite ease-in-out;
+}
+
+/* @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+} */

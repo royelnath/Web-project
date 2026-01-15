@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday Ankita!</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            touch-action: none;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+        }
+
+        #message-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #fff0f3 0%, #ffdee9 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 2.5s ease-in-out;
+            z-index: 9999;
+        }
+
+        .letter {
+            background: #ffffff;
+            width: 85%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(255, 77, 109, 0.2);
+            text-align: center;
+            border: 1px solid #ffccd5;
+            position: relative;
+        }
+
+        .letter::before {
+            content: '❤️';
+            font-size: 35px;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        h1 {
+            color: #ff4d6d;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        p {
+            height: auto;
+            text-align: left;
+            color: #444;
+            line-height: 1.4;
+            font-size: 1rem;
+        }
+
+        .signature {
+            margin-top: 25px;
+            text-align: right;
+            font-weight: bold;
+            color: #ff4d6d;
+            font-style: italic;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ffe5ec;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            p {
+                font-size: 0.7rem;
+            }
+
+            .letter {
+                margin: 5%;
+                padding: 20px;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="bg-music" loop>
+        <source src="audio_happybirthday.mp3" type="audio/mp3">
+    </audio>
+
+    <canvas id="main-canvas"></canvas>
+    <canvas id="birthday-canvas"></canvas>
+
+    <div id="message-page">
+        <div class="letter">
+            <h1 style="text-align: left">Dear Buggu, ❤️</h1>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Many many happy returns of the day! I am so happy to celebrate another year of
+                your life.<br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;I am so grateful to have you in my life. You are always there to talk to, and
+                you make everything more fun.
+                I hope this birthday brings you all the happiness you deserve because you are a great person.
+                Whenever I am having a bad day, talking to you makes everything feel okay again.
+                You have a way of making people smile without even trying.</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;We have shared so many great memories together and I look forward to making many
+                more.
+                You are my everything and I am forever thankful that we are such close friends.</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;I hope this year brings you as much joy as you give to the world.</p>
+            <hr>
+            <div class="signature">With love, <br> Yours 🐼 </div>
+        </div>
+    </div>
+
+    <script>
+        const music = document.getElementById('bg-music');
+
+        // Music play karne ka function
+        function playMusic() {
+            music.volume = 0.5; // Awaaz 50% par
+            music.play().catch(error => {
+                console.log("Autoplay blocked by browser, but should work since user interacted on previous page.");
+            });
+        }
+
+        // Music ko dheere se band karne ka function (Fade Out)
+        function fadeOutMusic() {
+            let fadeInterval = setInterval(() => {
+                if (music.volume > 0.05) {
+                    music.volume -= 0.05;
+                } else {
+                    music.pause();
+                    clearInterval(fadeInterval);
+                }
+            }, 200);
+        }
+
+        /* --- BAAKI CANVAS LOGIC SAME HAI --- */
+        const c = document.getElementById('birthday-canvas');
+        const ctx = c.getContext('2d');
+        const fvC = document.getElementById('main-canvas');
+        const fctx = fvC.getContext('2d');
+
+        let w, h, hw, hh;
+        let letters = [];
+        let particles = [];
+        const scriptStartTime = Date.now();
+
+        const opts = {
+            strings: ['HAPPY', 'BIRTHDAY', 'TO BUGGU!'],
+            charSize: 0, charSpacing: 0, lineHeight: 0,
+            fireworkSpawnTime: 500, fireworkBaseReachTime: 70,
+            letterContemplatingWaitTime: 1500, balloonBaseSize: 0,
+            upFlow: -0.015, startDelay: 2000
+        };
+
+        function resize() {
+            w = c.width = fvC.width = window.innerWidth;
+            h = c.height = fvC.height = window.innerHeight;
+            hw = w / 2; hh = h / 2;
+            const isMobile = w < 600;
+            if (isMobile) {
+                opts.charSize = Math.min(w / 8, 38);
+                opts.charSpacing = opts.charSize * 1.1;
+                opts.lineHeight = opts.charSize * 1.5;
+            } else {
+                opts.charSize = 65; opts.charSpacing = opts.charSize * 1.2;
+                opts.lineHeight = opts.charSize * 1.5;
+            }
+            opts.balloonBaseSize = isMobile ? 22 : 32;
+            initLetters();
+        }
+
+        function initLetters() {
+            letters = [];
+            for (var i = 0; i < opts.strings.length; ++i) {
+                let currentSpacing = opts.charSpacing;
+                let rowWidth = opts.strings[i].length * currentSpacing;
+                if (rowWidth > w * 0.9) {
+                    currentSpacing = (w * 0.9) / opts.strings[i].length;
+                    rowWidth = opts.strings[i].length * currentSpacing;
+                }
+                for (var j = 0; j < opts.strings[i].length; ++j) {
+                    letters.push(new Letter(
+                        opts.strings[i][j],
+                        j * currentSpacing - rowWidth / 2 + currentSpacing / 2,
+                        i * opts.lineHeight - (opts.strings.length * opts.lineHeight) / 2 + opts.lineHeight / 2
+                    ));
+                }
+            }
+        }
+
+        function Letter(char, x, y) {
+            this.char = char; this.x = x; this.y = y;
+            this.dx = -ctx.measureText(char).width / 2;
+            this.dy = opts.charSize / 2;
+            this.color = `hsl(${Math.random() * 360}, 100%, 75%)`;
+            this.reset();
+        }
+
+        Letter.prototype.reset = function () {
+            this.phase = 'firework'; this.tick = 0; this.spawned = false;
+            this.spawningTime = Math.random() * opts.fireworkSpawnTime | 0;
+            this.reachTime = opts.fireworkBaseReachTime + Math.random() * 30 | 0;
+            this.launchX = Math.random() * w;
+        };
+
+        Letter.prototype.step = function () {
+            if (this.phase === 'firework') {
+                if (!this.spawned) {
+                    if (++this.tick >= this.spawningTime) { this.tick = 0; this.spawned = true; }
+                } else {
+                    let prop = ++this.tick / this.reachTime;
+                    let curX = this.launchX + (hw + this.x - this.launchX) * prop;
+                    let curY = h - (h - (hh + this.y)) * Math.pow(prop, 0.5);
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath(); ctx.arc(curX, curY, 3, 0, Math.PI * 2); ctx.fill();
+                    if (this.tick >= this.reachTime) { this.phase = 'contemplate'; this.tick = 0; }
+                }
+            } else if (this.phase === 'contemplate') {
+                ctx.shadowBlur = 15; ctx.shadowColor = this.color;
+                let grad = ctx.createLinearGradient(hw + this.x, hh + this.y - opts.charSize, hw + this.x, hh + this.y);
+                grad.addColorStop(0, "#fff"); grad.addColorStop(1, this.color);
+                ctx.fillStyle = grad;
+                ctx.font = 'bold ' + opts.charSize + 'px Arial';
+                ctx.fillText(this.char, hw + this.x + this.dx, hh + this.y + this.dy);
+                ctx.shadowBlur = 0;
+                if (++this.tick > opts.letterContemplatingWaitTime) {
+                    this.phase = 'balloon'; this.tick = 0;
+                    this.cx = hw + this.x; this.cy = hh + this.y;
+                    this.vx = (Math.random() - 0.5) * 1.5; this.vy = -1.2;
+                }
+            } else if (this.phase === 'balloon') {
+                this.cx += this.vx; this.cy += this.vy += opts.upFlow;
+                ctx.strokeStyle = "rgba(255,255,255,0.4)";
+                ctx.lineWidth = 1.2;
+                ctx.beginPath(); ctx.moveTo(this.cx, this.cy); ctx.lineTo(this.cx, this.cy + 55); ctx.stroke();
+                let bGrad = ctx.createRadialGradient(this.cx - 7, this.cy - 10, 2, this.cx, this.cy, opts.balloonBaseSize);
+                bGrad.addColorStop(0, "#fff"); bGrad.addColorStop(1, this.color);
+                ctx.fillStyle = bGrad;
+                ctx.beginPath(); ctx.ellipse(this.cx, this.cy, opts.balloonBaseSize, opts.balloonBaseSize + 8, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = this.color;
+                ctx.font = 'bold ' + (opts.charSize * 0.8) + 'px Arial';
+                ctx.fillText(this.char, this.cx - (opts.charSize * 0.35), this.cy + 85);
+                if (this.cy < -200) this.phase = 'done';
+            }
+        };
+
+        function updateFireworks() {
+            fctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            fctx.fillRect(0, 0, w, h);
+            particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy += 0.22; p.alpha -= 0.015;
+                fctx.globalAlpha = p.alpha; fctx.fillStyle = p.color;
+                fctx.fillRect(p.x, p.y, 2.5, 2.5);
+                if (p.alpha <= 0) particles.splice(i, 1);
+            });
+            if (Math.random() < 0.06) {
+                const x = Math.random() * w, color = `hsl(${Math.random() * 360}, 100%, 65%)`;
+                for (let i = 0; i < 30; i++) particles.push({
+                    x, y: h, vx: (Math.random() - 0.5) * 12, vy: (Math.random() - 1) * 18, alpha: 1, color
+                });
+            }
+        }
+
+        function anim() {
+            ctx.clearRect(0, 0, w, h);
+            updateFireworks();
+            if (Date.now() - scriptStartTime > opts.startDelay) {
+                let allDone = true;
+                letters.forEach(l => { l.step(); if (l.phase !== 'done') allDone = false; });
+                if (allDone && letters.length > 0) {
+                    const mp = document.getElementById('message-page');
+                    mp.style.visibility = 'visible';
+                    mp.style.opacity = '1';
+                    fadeOutMusic(); // Jab message aaye tab music band ho jaye
+                    return;
+                }
+            }
+            requestAnimationFrame(anim);
+        }
+
+        window.addEventListener('resize', resize);
+
+        // Page load hote hi music start (permission pichle page se mil gayi hai)
+        window.addEventListener('DOMContentLoaded', () => {
+            playMusic();
+        });
+
+        resize();
+        anim();
+    </script>
+</body>
+
+
+</html>

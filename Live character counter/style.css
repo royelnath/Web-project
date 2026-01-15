@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Padding se layout na hile isliye zaroori hai */
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Gradient ko thoda smooth kiya hai */
+    background: radial-gradient(circle, #444, #000); 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    text-align: center;
+    border: 2px outset rgba(255, 255, 255, 0.2);
+    padding: 25px;
+    /* Gradient color combinations ko soft kiya */
+    background: linear-gradient(45deg, #d32f2f, #828d40); 
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 400px; /* Desktop ke liye fixed width */
+}
+
+h2 {
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+}
+
+textarea {
+    width: 100%; /* Container ke hisaab se auto adjust */
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    resize: none;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.9);
+    /* Scrollbar behavior */
+    overflow-y: auto; 
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+textarea::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    color: white;
+    font-weight: bold;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .container {
+        width: 90vw; /* Screen ka 90% cover karega */
+        padding: 20px;
+    }
+
+    textarea {
+        font-size: 1rem;
+        height: 120px;
+    }
+}

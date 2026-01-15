@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Deep space background with a subtle hint of color */
+    background: radial-gradient(circle at center, #1a1a2e 0%, #020205 100%);
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+}
+
+/* Background Glowing Elements */
+body::before,
+body::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -1;
+}
+
+body::before {
+    background: rgba(0, 255, 157, 0.2);
+    /* Neon Green tint */
+    top: 10%;
+    left: 10%;
+}
+
+body::after {
+    background: rgba(255, 0, 85, 0.2);
+    /* Neon Pink tint */
+    bottom: 10%;
+    right: 10%;
+}
+
+.container {
+    /* Glassmorphism Effect */
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 60px 100px;
+
+    /* Professional Drop Shadow */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+
+    text-align: center;
+    transition: all 0.5s ease;
+}
+
+/* Hover Effect */
+.container:hover {
+    border: 1px solid rgba(0, 255, 157, 0.4);
+    box-shadow: 0 25px 80px rgba(0, 255, 157, 0.2);
+    transform: scale(1.02);
+}
+
+h1 {
+    font-size: 6rem;
+    color: #00ff9d;
+    /* Electric Neon Green */
+
+    /* Neon Glow Effect */
+    text-shadow: 0 0 10px rgba(0, 255, 157, 0.8),
+        0 0 20px rgba(0, 255, 157, 0.5),
+        0 0 40px rgba(0, 255, 157, 0.3);
+
+    letter-spacing: 10px;
+    font-weight: 400;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .container {
+        width: 90vw;
+        padding: 50px 20px;
+    }
+
+    h1 {
+        font-size: 3.5rem;
+        letter-spacing: 5px;
+    }
+}
