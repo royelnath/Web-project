@@ -1,27 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QR Code Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <div class="container">
-    <h1>QR Code Generator</h1>
-    <input type="text" id="text" placeholder="Enter text or URL" />
-    <button onclick="generateQR()">Generate</button>
-    <div id="qrcode"></div>
-  </div>
-  <script>
-    function generateQR() {
-      const text = document.getElementById("text").value;
-      const url = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(text)}&size=200x200`;
-      document.getElementById("qrcode").innerHTML = `<img src="${url}" alt="QR Code" />`;
-    }
-  </script>
+  <a class="back" href="../index.html">&larr; Back</a>
 
+  <div class="container">
+    <h1>QR Code <span>Generator</span></h1>
+    <p class="hint">Turn any text or link into a scannable QR code</p>
+
+    <input type="text" id="text" placeholder="Enter text or URL" />
+    <button id="generateBtn">Generate</button>
+
+    <div id="qrcode"></div>
+
+    <a id="downloadBtn" class="download" href="#" download="qrcode.png" style="display:none;">Download PNG</a>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 
 </html>

@@ -1,100 +1,150 @@
+:root {
+  --white: #ffffff;
+  --ink: #111111;
+  --red: #e6402c;
+  --grey: #767676;
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    /* margin-top hata diya kyunki flex center kar raha hai */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    /* 80vh se 100vh kiya taaki screen ke beech mein rahe */
-    user-select: none;
-    overflow-x: hidden;
-    /* Side scroll rokne ke liye */
+  margin: 0;
+  min-height: 100vh;
+  background: var(--white);
+  color: var(--ink);
+  font-family: 'Archivo', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('https://s3-figma-plugin-images-production-sig.figma.com/plugins/carousel/img/1272097268336987958/ae874b7867812acb93701732b75909b5d7af3394?Expires=1769385600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Z2Ma0ECqjSewDtLX1U2sK-L-Jp-0-ADy705BOMJtZ8FpB0eSF1sSFKtGfpGQIhj4-oeMsq1qYRB5cGD7n8ejoMUMQMW9MTsIbgpblyKZtJr3TDX8LJrA5TDMcxhuVyMrDG9EV1DghGDEYR3U4E27S8IcIpTl2~8-INPBtz611kS7tRwXiQsOgpY9AatJnzLCdHNfznI~Ejt0NASoR8pOfrZyguW9qbot-9S-eNf4wtNDr1VxENXlPgfH4ENh5Qw7VbiG-2tqN8St4EeNcYpi6jHZ-nttB42Ds-MnDrs6tUIe15e6-6trzshXtpD3WhiHsLzJxOWvvqnkGChSqRYOaw__');
-    background-size: cover;
-    background-position: center;
-    filter: blur(8px);
-    transform: scale(1.1);
-    z-index: -1;
+.back {
+  position: fixed;
+  top: 24px;
+  left: 26px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--grey);
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--red);
 }
 
 .container {
-    width: 90%;
-    /* Fixed width ki jagah % use karein */
-    max-width: 500px;
-    /* Desktop par zyada bada na ho */
-    background-color: rgba(255, 255, 255, 0.2);
-    /* Green se Glassmorphism kiya */
-    backdrop-filter: blur(10px);
-    /* Modern look */
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    height: auto;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  border: 1px solid #e2e2e2;
+  border-radius: 14px;
+  padding: 40px 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+}
+
+h1 {
+  font-size: clamp(24px, 5vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+h1 span {
+  color: var(--red);
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--grey);
+  margin: 0 0 26px;
 }
 
 input {
-    padding: 12px;
-    width: 100%;
-    /* Input ko responsive kiya */
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
+  width: 100%;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  outline: none;
+  margin-bottom: 14px;
+  transition: border-color .12s ease;
+}
+
+input:focus {
+  border-color: var(--red);
 }
 
 button {
-    padding: 12px 25px;
-    width: 100%;
-    /* Button ko mobile friendly kiya */
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
+  width: 100%;
+  padding: 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  background: var(--ink);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .12s ease, transform .12s ease;
+}
+
+button:hover {
+  background: var(--red);
 }
 
 button:active {
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 #qrcode {
-    margin-top: 20px;
-    width: 100%;
-    height: auto;
-    /* vh/vw hataya taaki image stretch na ho */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin-top: 26px;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #qrcode img {
-    max-width: 200px;
-    /* QR code ka size limit kiya */
-    height: auto;
-    border: 5px solid white;
-    border-radius: 10px;
+  width: 200px;
+  height: 200px;
+  max-width: 100%;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  padding: 10px;
+  background: var(--white);
 }
 
-@media (max-width: 600px) {
-    .container {
-        width: 90vw;
-        padding: 20px;
-    }
+.download {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--white);
+  background: var(--red);
+  padding: 10px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: opacity .12s ease;
+}
+
+.download:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 30px 22px;
+    border-radius: 10px;
+  }
 }
