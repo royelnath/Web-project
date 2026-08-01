@@ -45,6 +45,12 @@
             box-shadow: 0 0 30px rgba(255, 77, 109, 0.3);
             max-width: 300px;
             width: 80%;
+            animation: popIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.85) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         #start-btn {
@@ -57,6 +63,23 @@
             cursor: pointer;
             font-weight: bold;
             box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+        }
+
+        .back {
+            position: fixed;
+            top: 20px;
+            left: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: rgba(255, 255, 255, 0.55);
+            text-decoration: none;
+            z-index: 10001;
+        }
+
+        .back:hover {
+            color: #ff4d6d;
         }
 
         /* Countdown Style */
@@ -83,6 +106,22 @@
             color: #ff4d6d;
             margin-bottom: 30px;
             text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+            animation: heartbeat 2.2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.045); }
+        }
+
+        #hearts-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* FLEXBOX FOR ONE LINE */
@@ -118,6 +157,16 @@
             font-size: 0.7rem;
             color: #ffb3c1;
             text-transform: uppercase;
+        }
+
+        .time-box.pulse {
+            animation: tickPulse 1s ease;
+        }
+
+        @keyframes tickPulse {
+            0% { transform: scale(1); border-color: rgba(255, 77, 109, 0.2); }
+            30% { transform: scale(1.08); border-color: rgba(255, 77, 109, 0.8); }
+            100% { transform: scale(1); border-color: rgba(255, 77, 109, 0.2); }
         }
 
         /* --- MOBILE SPECIFIC FIX --- */
@@ -159,6 +208,8 @@
 
 <body>
 
+    <a class="back" href="../index.html">&larr; Back</a>
+
     <div id="permission-overlay">
         <div class="pop-up-box">
             <h2 style="color: #ff4d6d;">Ready? ❤️</h2>
@@ -168,6 +219,7 @@
     </div>
 
     <div class="heart-bg"></div>
+    <canvas id="hearts-canvas"></canvas>
 
     <div class="container">
         <h1 id="title">Waiting for the Magic...</h1>
@@ -192,6 +244,62 @@
     </div>
 
     <script>
+        // --- Floating hearts background ---
+        const heartsCanvas = document.getElementById('hearts-canvas');
+        const hctx = heartsCanvas.getContext('2d');
+        let hw, hh;
+        let hearts = [];
+
+        function resizeHearts() {
+            hw = heartsCanvas.width = window.innerWidth;
+            hh = heartsCanvas.height = window.innerHeight;
+        }
+
+        function makeHeart() {
+            return {
+                x: Math.random() * hw,
+                y: hh + 20,
+                size: 8 + Math.random() * 14,
+                speed: 0.4 + Math.random() * 0.9,
+                drift: (Math.random() - 0.5) * 0.6,
+                opacity: 0.15 + Math.random() * 0.35
+            };
+        }
+
+        function drawHeart(h) {
+            hctx.save();
+            hctx.globalAlpha = h.opacity;
+            hctx.fillStyle = '#ff4d6d';
+            hctx.translate(h.x, h.y);
+            hctx.scale(h.size / 20, h.size / 20);
+            hctx.beginPath();
+            hctx.moveTo(0, 4);
+            hctx.bezierCurveTo(0, -2, -10, -6, -10, 2);
+            hctx.bezierCurveTo(-10, 8, 0, 12, 0, 18);
+            hctx.bezierCurveTo(0, 12, 10, 8, 10, 2);
+            hctx.bezierCurveTo(10, -6, 0, -2, 0, 4);
+            hctx.fill();
+            hctx.restore();
+        }
+
+        function animateHearts() {
+            hctx.clearRect(0, 0, hw, hh);
+            hearts.forEach((h) => {
+                h.y -= h.speed;
+                h.x += h.drift;
+                drawHeart(h);
+            });
+            hearts = hearts.filter((h) => h.y > -30);
+            if (hearts.length < 24 && Math.random() < 0.06) {
+                hearts.push(makeHeart());
+            }
+            requestAnimationFrame(animateHearts);
+        }
+
+        window.addEventListener('resize', resizeHearts);
+        resizeHearts();
+        animateHearts();
+
         let jarvisReady = false;
         const synth = window.speechSynthesis;
 
@@ -212,7 +320,19 @@
             synth.speak(utter);
         }
 
-        const targetDate = new Date("December 26, 2025 16:50:00").getTime();
+        // Always counts down to the next upcoming Dec 26, 4:50 PM —
+        // so the countdown never goes stale/negative after the date passes.
+        function getNextTargetDate(month, day, hour, minute) {
+            const now = new Date();
+            let year = now.getFullYear();
+            let target = new Date(year, month - 1, day, hour, minute, 0);
+            if (target.getTime() <= now.getTime()) {
+                target = new Date(year + 1, month - 1, day, hour, minute, 0);
+            }
+            return target.getTime();
+        }
+
+        const targetDate = getNextTargetDate(12, 26, 16, 50);
         let lastSecondSpoken = -1;
 
         function updateCountdown() {
@@ -228,6 +348,11 @@
             document.getElementById("hours").innerText = String(h).padStart(2, '0');
             document.getElementById("minutes").innerText = String(m).padStart(2, '0');
             document.getElementById("seconds").innerText = String(s).padStart(2, '0');
+
+            const secondsBox = document.getElementById("seconds").closest(".time-box");
+            secondsBox.classList.remove("pulse");
+            void secondsBox.offsetWidth; // restart animation
+            secondsBox.classList.add("pulse");
 
             if (jarvisReady && d === 0 && h === 0 && m === 0 && s <= 10 && s > 0) {
                 if (s !== lastSecondSpoken) {

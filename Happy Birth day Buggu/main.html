@@ -47,6 +47,51 @@
             text-align: center;
             border: 1px solid #ffccd5;
             position: relative;
+            animation: letterRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+        }
+
+        @keyframes letterRise {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .back {
+            position: fixed;
+            top: 20px;
+            left: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: rgba(255, 255, 255, 0.55);
+            text-decoration: none;
+            z-index: 10000;
+        }
+
+        .back:hover {
+            color: #ff4d6d;
+        }
+
+        #mute-btn {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            z-index: 10000;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 77, 109, 0.4);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #mute-btn:hover {
+            border-color: #ff4d6d;
         }
 
         .letter::before {
@@ -105,8 +150,11 @@
 </head>
 
 <body>
+    <a class="back" href="../index.html">&larr; Back</a>
+    <button id="mute-btn" title="Mute / unmute music">&#128266;</button>
+
     <audio id="bg-music" loop>
-        <source src="audio_happybirthday.mp3" type="audio/mp3">
+        <source src="audio/happybirthday.mpeg" type="audio/mpeg">
     </audio>
 
     <canvas id="main-canvas"></canvas>
@@ -133,6 +181,12 @@
 
     <script>
         const music = document.getElementById('bg-music');
+        const muteBtn = document.getElementById('mute-btn');
+
+        muteBtn.addEventListener('click', () => {
+            music.muted = !music.muted;
+            muteBtn.innerHTML = music.muted ? '&#128263;' : '&#128266;';
+        });
 
         // Music play karne ka function
         function playMusic() {
