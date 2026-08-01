@@ -333,7 +333,6 @@
         }
 
         const targetDate = getNextTargetDate(12, 26, 16, 50);
-        let lastSecondSpoken = -1;
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -353,13 +352,6 @@
             secondsBox.classList.remove("pulse");
             void secondsBox.offsetWidth; // restart animation
             secondsBox.classList.add("pulse");
-
-            if (jarvisReady && d === 0 && h === 0 && m === 0 && s <= 10 && s > 0) {
-                if (s !== lastSecondSpoken) {
-                    speak(s.toString());
-                    lastSecondSpoken = s;
-                }
-            }
 
             if (distance < 0) {
                 clearInterval(interval);

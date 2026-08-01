@@ -154,7 +154,7 @@
     <button id="mute-btn" title="Mute / unmute music">&#128266;</button>
 
     <audio id="bg-music" loop>
-        <source src="audio/happybirthday.mpeg" type="audio/mpeg">
+        <source src="audio/happybirthday.mp3" type="audio/mpeg">
     </audio>
 
     <canvas id="main-canvas"></canvas>
@@ -191,9 +191,20 @@
         // Music play karne ka function
         function playMusic() {
             music.volume = 0.5; // Awaaz 50% par
-            music.play().catch(error => {
-                console.log("Autoplay blocked by browser, but should work since user interacted on previous page.");
-            });
+            const playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    // Browser blocked autoplay (gesture on the previous page didn't carry over).
+                    // Start music on the very next tap/click anywhere on this page instead.
+                    const resumeOnInteraction = () => {
+                        music.play().catch(() => {});
+                        document.removeEventListener('click', resumeOnInteraction);
+                        document.removeEventListener('touchstart', resumeOnInteraction);
+                    };
+                    document.addEventListener('click', resumeOnInteraction, { once: true });
+                    document.addEventListener('touchstart', resumeOnInteraction, { once: true });
+                });
+            }
         }
 
         // Music ko dheere se band karne ka function (Fade Out)
