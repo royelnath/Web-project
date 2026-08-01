@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --white: #ffffff;
+      --ink: #111111;
+      --red: #e6402c;
+      --grey: #767676;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--white);
+      color: var(--ink);
+      font-family: 'Archivo', sans-serif;
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 26px 100px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      border-bottom: 4px solid var(--ink);
+      padding-bottom: 20px;
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 74px);
+      font-weight: 800;
+      margin: 0;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+    }
+
+    h1 span {
+      color: var(--red);
+    }
+
+    .meta {
+      text-align: right;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--grey);
+    }
+
+    .subline {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: var(--grey);
+      padding: 14px 0;
+      border-bottom: 1px solid #e2e2e2;
+    }
+
+    .about {
+      font-size: 14px;
+      color: var(--grey);
+      max-width: 560px;
+      line-height: 1.6;
+      margin: 24px 0 46px;
+      font-weight: 400;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .entry {
+      grid-column: span 4;
+      display: grid;
+      grid-template-columns: 80px 1fr 140px;
+      align-items: center;
+      border-bottom: 1px solid var(--ink);
+      padding: 22px 0;
+      text-decoration: none;
+      color: var(--ink);
+      gap: 20px;
+    }
+
+    .entry:first-child {
+      border-top: 1px solid var(--ink);
+    }
+
+    .entry .num {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey);
+    }
+
+    .entry .title {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .entry .desc {
+      font-size: 12.5px;
+      color: var(--grey);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .entry .tag {
+      justify-self: end;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--white);
+      background: var(--ink);
+      padding: 6px 12px;
+      border-radius: 2px;
+      transition: background .12s ease;
+    }
+
+    .tag:hover {
+      background: var(--red);
+      transform: scale(1.1);
+      transition: all 0.5s;
+    }
+
+    .title:hover {
+      color: var(--red);
+    }
+
+    .entry .also {
+      grid-column: 2/3;
+      font-size: 11.5px;
+      color: var(--grey);
+      margin-top: 6px;
+    }
+
+    .entry .also a {
+      color: var(--red);
+    }
+
+    .entry-multi .multi-tags {
+      justify-self: end;
+      display: flex;
+      gap: 8px;
+    }
+
+    .entry-multi .tag {
+      text-decoration: none;
+    }
+
+    .entry-multi .tag:hover {
+      background: var(--red);
+    }
+
+    .entry-multi:hover .title {
+      color: var(--ink);
+    }
+
+    @media (max-width:600px) {
+      .entry {
+        grid-template-columns: 1fr auto;
+      }
+
+      .entry .num {
+        display: none;
+      }
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 11.5px;
+      color: var(--grey);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header>
+      <h1>Mini<br><span>Project</span></h1>
+      <div class="meta">Index / 2026</div>
+    </header>
+    <div class="subline"><span>8 Builds — HTML / CSS / JS</span><span>Select to Open</span></div>
+
+    <p class="about">These are small projects I built while I was just starting to learn web development HTML, CSS,
+      and JavaScript basics, practiced one idea at a time.</p>
+
+    <div class="grid">
+
+      <a class="entry" href="CLOCK/index.html">
+        <span class="num">01</span>
+        <span><span class="title">Clock</span>
+          <div class="desc">Live ticking clock via setInterval + Date</div>
+        </span>
+        <span class="tag">Open</span>
+      </a>
+
+      <a class="entry" href="calculator/index.html">
+        <span class="num">02</span>
+        <span><span class="title">Calculator</span>
+          <div class="desc">Add, subtract, multiply, divide</div>
+        </span>
+        <span class="tag">Open</span>
+      </a>
+
+      <a class="entry" href="Guuess the number/index.html">
+        <span class="num">03</span>
+        <span><span class="title">Guess the Number</span>
+          <div class="desc">1–100, higher / lower hints</div>
+        </span>
+        <span class="tag">Open</span>
+      </a>
+
+      <a class="entry" href="Count click/index.html">
+        <span class="num">04</span>
+        <span><span class="title">Click Counter</span>
+          <div class="desc">Tallies clicks in real time</div>
+        </span>
+        <span class="tag">Open</span>
+      </a>
+
+      <a class="entry" href="Live character counter/index.html">
+        <span class="num">05</span>
+        <span><span class="title">Live Character Counter</span>
+          <div class="desc">Counts characters on keystroke</div>
+        </span>
+        <span class="tag">Open</span>
+      </a>
+
+      <a class="entry" href="QR Code ganerator/index.html">
+        <span class="num">06</span>
+        <span><span class="title">QR Code Generator</span>
+          <div class="desc">Text / URL to scannable QR code</div>
+        </span>
+        <span class="tag">Open</span>
+      </a>
+
+      <div class="entry entry-multi">
+        <span class="num">07</span>
+        <span>
+          <span class="title">Color Change</span>
+          <div class="desc">Background shifts color on click — two versions</div>
+        </span>
+        <span class="multi-tags">
+          <a class="tag" href="color change/fixed.html">Fixed</a>
+          <a class="tag" href="color change/random.html">Random</a>
+        </span>
+      </div>
+
+      <a class="entry" href="Happy Birth day Buggu/index.html">
+        <span class="num">08</span>
+        <span><span class="title">Countdown to Love</span>
+          <div class="desc">Personal birthday countdown + audio</div>
+        </span>
+        <span class="tag">Open</span>
+      </a>
+
+    </div>
+
+    <footer>No build step · open any folder directly</footer>
+  </div>
+</body>
+
+</html>
