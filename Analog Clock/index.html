@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analog Clock — Designs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --white: #ffffff;
+      --ink: #111111;
+      --red: #e6402c;
+      --grey: #767676;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--white);
+      color: var(--ink);
+      font-family: 'Archivo', sans-serif;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 26px 100px;
+    }
+
+    .back {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--grey);
+      text-decoration: none;
+      margin-bottom: 22px;
+    }
+
+    .back:hover { color: var(--red); }
+
+    header {
+      border-bottom: 4px solid var(--ink);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 58px);
+      font-weight: 800;
+      margin: 0;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+    }
+
+    h1 span { color: var(--red); }
+
+    .subline {
+      font-size: 13px;
+      color: var(--grey);
+      margin-top: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      display: block;
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid #e2e2e2;
+      border-radius: 14px;
+      padding: 26px 22px;
+      transition: border-color .15s ease, transform .15s ease;
+    }
+
+    .card:hover {
+      border-color: var(--ink);
+      transform: translateY(-3px);
+    }
+
+    .preview {
+      width: 100%;
+      height: 150px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    /* classic preview */
+    .p-classic {
+      background: #fff;
+      border: 1px solid #e2e2e2;
+    }
+    .p-classic .dial {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 3px solid var(--ink);
+      position: relative;
+    }
+    .p-classic .h1-hand, .p-classic .h2-hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom;
+      border-radius: 3px;
+    }
+    .p-classic .h1-hand { width: 4px; height: 22px; margin-left: -2px; background: var(--ink); transform: rotate(45deg); }
+    .p-classic .h2-hand { width: 2px; height: 30px; margin-left: -1px; background: var(--red); transform: rotate(160deg); }
+    .p-classic .dot { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%,-50%); }
+
+    /* neumorph preview */
+    .p-neumorph {
+      background: #e6e9ef;
+    }
+    .p-neumorph .dial {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: #e6e9ef;
+      box-shadow: 8px 8px 16px #c3c8d6, -8px -8px 16px #ffffff;
+      position: relative;
+    }
+    .p-neumorph .h1-hand, .p-neumorph .h2-hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom;
+      border-radius: 3px;
+    }
+    .p-neumorph .h1-hand { width: 5px; height: 20px; margin-left: -2.5px; background: #33384a; transform: rotate(60deg); }
+    .p-neumorph .h2-hand { width: 3px; height: 28px; margin-left: -1.5px; background: var(--red); transform: rotate(180deg); }
+    .p-neumorph .dot { position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; background: #e6e9ef; border-radius: 50%; transform: translate(-50%,-50%); box-shadow: inset 2px 2px 4px #c3c8d6; }
+
+    /* neon preview */
+    .p-neon {
+      background: #0b0e14;
+    }
+    .p-neon .dial {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: #10141d;
+      border: 2px solid rgba(77,243,255,.45);
+      box-shadow: 0 0 16px rgba(77,243,255,.35);
+      position: relative;
+    }
+    .p-neon .h1-hand, .p-neon .h2-hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom;
+      border-radius: 3px;
+    }
+    .p-neon .h1-hand { width: 4px; height: 20px; margin-left: -2px; background: #4df3ff; box-shadow: 0 0 8px #4df3ff; transform: rotate(30deg); }
+    .p-neon .h2-hand { width: 2px; height: 28px; margin-left: -1px; background: #ff3ec8; box-shadow: 0 0 8px #ff3ec8; transform: rotate(200deg); }
+    .p-neon .dot { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: #ff3ec8; border-radius: 50%; transform: translate(-50%,-50%); box-shadow: 0 0 8px #ff3ec8; }
+
+    .title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .desc {
+      font-size: 12.5px;
+      color: var(--grey);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <a class="back" href="../index.html">&larr; Back to Projects</a>
+
+    <header>
+      <h1>Analog <span>Clock</span></h1>
+      <div class="subline">3 design variations — pick one to open</div>
+    </header>
+
+    <div class="grid">
+
+      <a class="card" href="classic/index.html">
+        <div class="preview p-classic">
+          <div class="dial">
+            <div class="h1-hand"></div>
+            <div class="h2-hand"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+        <div class="title">Classic</div>
+        <div class="desc">Clean white face, minimal numerals</div>
+      </a>
+
+      <a class="card" href="neumorph/index.html">
+        <div class="preview p-neumorph">
+          <div class="dial">
+            <div class="h1-hand"></div>
+            <div class="h2-hand"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+        <div class="title">Neumorph</div>
+        <div class="desc">Soft UI, embossed shadows</div>
+      </a>
+
+      <a class="card" href="neon/index.html">
+        <div class="preview p-neon">
+          <div class="dial">
+            <div class="h1-hand"></div>
+            <div class="h2-hand"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+        <div class="title">Neon</div>
+        <div class="desc">Dark glass, glowing hands</div>
+      </a>
+
+    </div>
+  </div>
+</body>
+
+</html>
